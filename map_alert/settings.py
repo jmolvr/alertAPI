@@ -17,7 +17,7 @@ load_dotenv()
 # configure Django app for heroku
 import django_heroku
 
-django_heroku.settings(locals(), databases=False, staticfiles=False)
+django_heroku.settings(locals(),  staticfiles=False)
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -81,7 +81,16 @@ WSGI_APPLICATION = "map_alert.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {"default": {"ENGINE": "django.db.backends.sqlite3", "NAME": "mydatabase",}}
+DATABASES = {
+    "default":{
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.getenv('DB_NAME'),
+        'USER': os.getenv('USER'), 
+        'PASSWORD': os.getenv('PASSWORD'),
+        'HOST': os.getenv('HOST'),
+        'PORT': os.getenv('PORT')
+    }
+}
 
 
 # Password validation
