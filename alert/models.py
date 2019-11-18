@@ -1,4 +1,5 @@
 from django.db import models
+from map_alert import settings
 
 
 class Tipo(models.Model):
@@ -16,11 +17,40 @@ class LocalUnifap(models.Model):
 
 
 class Alert(models.Model):
+    NAO_RESOLVIDO = 0
+    RESOLVIDO = 1
+    NAO_SERA_RESOLVIDO = 2
+
+    STATUS_CHOICES = (
+        (NAO_RESOLVIDO, 'Não Resolvido'),
+        (RESOLVIDO, 'Resolvido'),
+        (NAO_SERA_RESOLVIDO, 'Não será resolvido')
+    )
+
+    VISIVEL = 1
+    NAO_VISIVEL = 0
+    VISIBILIDADE = (
+        (VISIVEL, 'Está Visível'),
+        (NAO_VISIVEL, 'Não está visível')
+    )
+
     latitude = models.FloatField()
     longitude = models.FloatField()
     local = models.ForeignKey(LocalUnifap, on_delete=models.CASCADE)
     descricao = models.CharField(max_length=140)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
+    status = models.SmallIntegerField(choices=STATUS_CHOICES)
+    prazo = models.DateField(auto_now=False, null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    owner = models.ForeignKey(settings.AUTH_USER_MODEL,
+                              on_delete=models.CASCADE)
+    visible = models.SmallIntegerField(choices=VISIBILIDADE, default=1)
 
     def __str__(self):
         return str(f"(Local: {self.local}, Tipo: {self.tipo})")
+
+    def marcarResolvido(self):
+        pass
+
+    def marcarNaoSeraResolvido(self):
+        pass
