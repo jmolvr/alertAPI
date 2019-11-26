@@ -1,5 +1,6 @@
 from django.db import models
 from map_alert import settings
+from asgiref.sync import async_to_sync
 
 
 class Tipo(models.Model):
@@ -39,7 +40,7 @@ class Alert(models.Model):
     local = models.ForeignKey(LocalUnifap, on_delete=models.CASCADE)
     descricao = models.CharField(max_length=140)
     tipo = models.ForeignKey(Tipo, on_delete=models.CASCADE)
-    status = models.SmallIntegerField(choices=STATUS_CHOICES)
+    status = models.SmallIntegerField(choices=STATUS_CHOICES, default=0)
     prazo = models.DateField(auto_now=False, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,

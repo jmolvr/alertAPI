@@ -1,6 +1,8 @@
 from rest_framework import serializers
 from django.core.exceptions import ObjectDoesNotExist,  ValidationError
-from .models import *
+from .models import Alert, Tipo, LocalUnifap
+from user.serializers import UserSerializer
+from channels.layers import get_channel_layer
 
 
 class TipoCustomSerializer(serializers.ModelSerializer):
@@ -24,20 +26,28 @@ class AlertSerializer(serializers.ModelSerializer):
         return Alert.objects.create(**validated_data)
 
     def update(self, instance, validate_data):
-        instance.descricao = validate_data.get('descricao', instance.descricao)
+        request = self.context['request']
+        if request.user.is_admin:
+            instance.descricao = instance.descricao
+            instance.prazo = validate_data.get('prazo', instance.prazo)
+        else:
+            instance.descricao = validate_data.get(
+                'descricao', instance.descricao)
         instance.status = validate_data.get('status', instance.status)
-        instance.prazo = validate_data.get('prazo', instance.prazo)
+
         instance.save()
         return instance
 
     def to_internal_value(self, data):
-        user = self.context['request'].user
+        request = self.context['request']
+
+        if request.method == "PUT":
+            return self.put_validate_data(request, data)
+
         latitude = data.get('latitude')
         longitude = data.get('longitude')
         descricao = data.get('descricao')
         local = data.get('local')
-        status = data.get('status')
-        prazo = data.get('prazo')
         tipo = data.get('tipo')
 
         if latitude is None:
@@ -58,11 +68,6 @@ class AlertSerializer(serializers.ModelSerializer):
         if not local:
             raise serializers.ValidationError({
                 'local': 'This field is required'
-            })
-
-        if status is None:
-            raise serializers.ValidationError({
-                'status': 'This field is required'
             })
 
         if not tipo:
@@ -89,10 +94,8 @@ class AlertSerializer(serializers.ModelSerializer):
             'longitude': longitude,
             'descricao': descricao,
             'tipo': tipo,
-            'prazo': prazo,
             'local': local,
-            'status': status,
-            'owner': user,
+            'owner': request.user,
         }
 
     def to_representation(self, obj):
@@ -105,5 +108,21 @@ class AlertSerializer(serializers.ModelSerializer):
             'prazo': obj.prazo,
             'local': LocalUnifapSerializer(obj.local).data,
             'status': obj.status,
-            'created_at': obj.created_at,
+            'created_at': str(obj.created_at),
+            'owner': UserSerializer(obj.owner).data
         }
+
+    def put_validate_data(self, request, data):
+        descricao = data.get("descricao")
+        prazo = data.get('prazo')
+        status = data.get('status')
+
+        return({
+            'descricao': descricao,
+            'prazo': prazo,
+            'status': status,
+        })
+
+    @staticmethod
+    def get_group():
+        return 'alertas'
