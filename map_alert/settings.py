@@ -123,7 +123,7 @@ sql_lite = {
     }
 }
 
-DATABASES = sql_lite
+DATABASES = postgree
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
