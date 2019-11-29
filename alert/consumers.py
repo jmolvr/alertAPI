@@ -1,9 +1,8 @@
 from asgiref.sync import async_to_sync
-from channels.generic.websocket import AsyncJsonWebsocketConsumer
-from channels.db import database_sync_to_async
-from alert.serializers import AlertSerializer, TipoCustomSerializer
 from channels.layers import get_channel_layer
+from channels.generic.websocket import AsyncJsonWebsocketConsumer
 from alert.models import Alert
+from alert.serializers import AlertSerializer
 from django.db.models.signals import post_save, post_delete
 from django.dispatch import receiver
 
@@ -34,7 +33,6 @@ class AlertConsumer(AsyncJsonWebsocketConsumer):
 
 @receiver([post_save, post_delete], sender=Alert)
 def update_alerts(sender, instance, **kwargs):
-    print("Signal received")
     alertas = Alert.objects.order_by('-created_at')
     serializer = AlertSerializer(alertas, many=True)
     group_name = AlertSerializer.get_group()

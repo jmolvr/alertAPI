@@ -45,13 +45,7 @@ class Alert(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL,
                               on_delete=models.CASCADE)
-    visible = models.SmallIntegerField(choices=VISIBILIDADE, default=1)
+    image = models.FileField()
 
     def __str__(self):
         return str(f"(Local: {self.local}, Tipo: {self.tipo})")
-
-    def marcarResolvido(self):
-        pass
-
-    def marcarNaoSeraResolvido(self):
-        pass

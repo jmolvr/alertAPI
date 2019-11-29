@@ -18,6 +18,10 @@ class LocalUnifapSerializer(serializers.ModelSerializer):
 
 
 class AlertSerializer(serializers.ModelSerializer):
+    tipo = TipoCustomSerializer(read_only=True)
+    local = LocalUnifapSerializer(read_only=True)
+    owner = UserSerializer(read_only=True)
+
     class Meta:
         model = Alert
         exclude = []
@@ -49,7 +53,8 @@ class AlertSerializer(serializers.ModelSerializer):
         descricao = data.get('descricao')
         local = data.get('local')
         tipo = data.get('tipo')
-
+        image = data.get('image')
+        print(dir(image))
         if latitude is None:
             raise serializers.ValidationError({
                 'latitude': 'This field is required'
@@ -95,21 +100,8 @@ class AlertSerializer(serializers.ModelSerializer):
             'descricao': descricao,
             'tipo': tipo,
             'local': local,
+            'image': image,
             'owner': request.user,
-        }
-
-    def to_representation(self, obj):
-        return{
-            'id': obj.id,
-            'latitude': obj.latitude,
-            'longitude': obj.longitude,
-            'descricao': obj.descricao,
-            'tipo': TipoCustomSerializer(obj.tipo).data,
-            'prazo': obj.prazo,
-            'local': LocalUnifapSerializer(obj.local).data,
-            'status': obj.status,
-            'created_at': str(obj.created_at),
-            'owner': UserSerializer(obj.owner).data
         }
 
     def put_validate_data(self, request, data):
