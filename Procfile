@@ -1,1 +1,1 @@
-web: gunicorn map_alert.wsgi
+web: daphne map_alert.asgi:application

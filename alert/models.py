@@ -48,4 +48,4 @@ class Alert(models.Model):
     image = models.FileField()
 
     def __str__(self):
-        return str(f"(Local: {self.local}, Tipo: {self.tipo})")
+        return f"(Local: {self.local}, Tipo: {self.tipo})"

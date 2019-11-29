@@ -54,7 +54,7 @@ class AlertSerializer(serializers.ModelSerializer):
         local = data.get('local')
         tipo = data.get('tipo')
         image = data.get('image')
-        print(dir(image))
+
         if latitude is None:
             raise serializers.ValidationError({
                 'latitude': 'This field is required'
