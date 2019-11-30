@@ -73,8 +73,9 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOW_METHODS = list(default_methods)
 
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
-MEDIA_URL = '/media/'
+MEDIA_URL = '/staticfiles/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+
 ROOT_URLCONF = "map_alert.urls"
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
