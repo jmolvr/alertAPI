@@ -27,14 +27,6 @@ class Alert(models.Model):
         (RESOLVIDO, 'Resolvido'),
         (NAO_SERA_RESOLVIDO, 'Não será resolvido')
     )
-
-    VISIVEL = 1
-    NAO_VISIVEL = 0
-    VISIBILIDADE = (
-        (VISIVEL, 'Está Visível'),
-        (NAO_VISIVEL, 'Não está visível')
-    )
-
     latitude = models.FloatField()
     longitude = models.FloatField()
     local = models.ForeignKey(LocalUnifap, on_delete=models.CASCADE)
