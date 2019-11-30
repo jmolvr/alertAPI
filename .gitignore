@@ -125,8 +125,7 @@ dmypy.json
 .pyre/
 
 ./mydatabase
-/media
 /media/*
-
+./staticfiles/*
 .vscode/
 .vscode/*
