@@ -1,1 +1,1 @@
-web: daphne map_alert.asgi:application
+web: daphne map_alert.asgi:application --port $PORT --bind 0.0.0.0
