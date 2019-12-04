@@ -34,6 +34,7 @@ class AlertSerializer(serializers.ModelSerializer):
         if request.user.is_admin:
             instance.descricao = instance.descricao
             instance.prazo = validate_data.get('prazo', instance.prazo)
+            instance.feedback = validate_data.get('feedback', instance.feedback)
         else:
             instance.descricao = validate_data.get(
                 'descricao', instance.descricao)
@@ -108,11 +109,13 @@ class AlertSerializer(serializers.ModelSerializer):
         descricao = data.get("descricao")
         prazo = data.get('prazo')
         status = data.get('status')
+        feedback = data.get('feedback')
 
         return({
             'descricao': descricao,
             'prazo': prazo,
             'status': status,
+            'feedback': feedback
         })
 
     @staticmethod
