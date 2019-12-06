@@ -34,7 +34,8 @@ class AlertSerializer(serializers.ModelSerializer):
         if request.user.is_admin:
             instance.descricao = instance.descricao
             instance.prazo = validate_data.get('prazo', instance.prazo)
-            instance.feedback = validate_data.get('feedback', instance.feedback)
+            instance.feedback = validate_data.get(
+                'feedback', instance.feedback)
         else:
             instance.descricao = validate_data.get(
                 'descricao', instance.descricao)
@@ -91,9 +92,8 @@ class AlertSerializer(serializers.ModelSerializer):
         try:
             local = LocalUnifap.objects.get(nome=local)
         except:
-            raise serializers.ValidationError({
-                'local': 'Local {} não está registrado'.format(local)
-            })
+            local = LocalUnifap(nome=local)
+            local.save()
 
         return {
             'latitude': latitude,
