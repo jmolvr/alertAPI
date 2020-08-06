@@ -6,6 +6,5 @@ application = ProtocolTypeRouter({
     'websocket':
         URLRouter(
             routing.websocket_urlpatterns
-
         )
 })

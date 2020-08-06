@@ -33,7 +33,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["mapalertunifapapi.herokuapp.com"]
+ALLOWED_HOSTS = ["mapalertunifapapi.herokuapp.com", "*"]
 
 
 # Application definition
@@ -126,7 +126,7 @@ sql_lite = {
     }
 }
 
-DATABASES = postgree
+DATABASES = sql_lite
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (

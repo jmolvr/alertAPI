@@ -7,18 +7,18 @@ verify_ssl = true
 autopep8 = "*"
 
 [packages]
-djangorestframework = "*"
-django-heroku = "*"
+djangorestframework = "3.11.1"
+django-heroku = "0.3.1"
 python-dotenv = "*"
-gunicorn = "*"
-psycopg2 = "*"
-whitenoise = "*"
-djoser = "*"
-djangorestframework-simplejwt = "*"
-django-cors-headers = "*"
-channels = "*"
-channels-redis = "*"
-django = "==2.2.7"
+gunicorn = "20.0.4"
+psycopg2 = "2.8.5"
+whitenoise = "5.2.0"
+djoser = "2.0.3"
+djangorestframework-simplejwt = "4.4.0"
+django-cors-headers = "3.4.0"
+channels = "2.4.0"
+channels-redis = "3.0.1"
+django = "3.1"
 
 [pipenv]
 allow_prereleases = true
